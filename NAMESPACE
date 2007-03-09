@@ -1,0 +1,4 @@
+import(Biobase)
+exportPattern("^[^\\.]")
+exportClasses(smc)
+export(.rwb)
