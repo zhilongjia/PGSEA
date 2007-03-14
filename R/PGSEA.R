@@ -326,8 +326,8 @@ go2smc <- function(min=50,max=200){
 		stop("library(GO) is required...")
 	else {
 		library(GO)
-		terms <- mget(ls(GOTERM),GOTERM)
-		lists <- mget(names(terms),GOALLENTREZID)
+		terms <- mget(ls(GOTERM),GOTERM,ifnotfound=NA)
+		lists <- mget(names(terms),GOALLENTREZID,ifnotfound=NA)
 		lengths <- unlist(lapply(lists,length))
 		
 		ix <- which(lengths > min & lengths < max)
