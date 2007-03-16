@@ -39,10 +39,9 @@ Laboratory of Computational Biology, Van Andel Research Institute
 	str(basic)
 @
 
-	As you can see, "gene a" and "gene b" were used in this example. Unfortunately genes are usually not annotated with such simplicity. Many different identifiers can be encountered when searching for expression data sets or gene lists. Not only are different identifiers used between different databases, sometimes multiple probes on the array can map to a single gene. This makes converting a large dataset complicated. To help with this problem, we have included \Rfunction{aggregateExprs}. This function will convert the row names of an expression matrix, featureNames of an ExpressionSet or geneNames of an exprSet to your desired format using the associated annotation environment. A function can also be included to collapse data from multiple probes to a single summary value.  By default \Rfunction{aggregateExprs} uses the mean of the duplicated probe values, but other summary functions, such as the "absolute maximum value" found in the \Rfunction{absMax} function (found in the package \Rpackage{reb}) are also worth considering.
 
 \section{Concepts from ".gmt" files}
-	A previous published method of gene expression termed "Gene Set Enrichment Analysis" \url{http://www.broad.mit.edu/gsea/} also used lists of related genes and to hold their gene lists they use a file format called ".gmt" and we have found it to be a simple and useful way to store our lists as well. To facilitate using this format in conjunction with our "smc" class, we have included the functions \Rfunction{readGmt} and \Rfunction{writeGmt}. An example of how to read in a ".gmt" file is shown below. The file provided contains some example molecular concepts. Genes induced and inhibited by Ras and Myc, as well as all genes on chromosome arms 5p and 5q have been included. 
+	A previous published method of gene set analysis termed "Gene Set Enrichment Analysis" \url{http://www.broad.mit.edu/gsea/} also used lists of related genes and to hold their lists they use a file format called ".gmt". We have found it to be a simple and useful way to store our lists as well. To facilitate using this format in conjunction with our "smc" class, we have included the functions \Rfunction{readGmt} and \Rfunction{writeGmt}. An example of how to read in a ".gmt" file is shown below. The file provided contains some example molecular concepts. Genes induced and inhibited by Ras and Myc, as well as all genes on chromosome arms 5p and 5q have been included. 
 	
 <<echo=TRUE, print=FALSE>>=	
 	datadir <- system.file("data", package = "PGSEA")
@@ -69,7 +68,7 @@ Laboratory of Computational Biology, Van Andel Research Institute
 
 \section{Using Gene Ontologies as concepts}
 
-	Next, for our list of concepts we will use the function \Rfunction{go2smc}. This function will return a very large list of concepts, so we will just use a few of them for illustration. 
+	Next, to create a list of concepts we will use the function \Rfunction{go2smc}. This function will convert the entire GO datbase into 'smc' objects. This is quite a large number to work with, so we will just use a few of them for illustration. 
 
 <<echo=TRUE, print=FALSE>>=
 	mcs <- go2smc()[1:10]
