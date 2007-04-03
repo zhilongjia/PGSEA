@@ -308,8 +308,13 @@ if(!is.null(ff)){
   }
   if(show.grid) 
     grid(ncol(m),nrow(m),col="slategrey")
-  if(cnames) axis(3, 1:ncol(m), las = 2, line = -0.5, tick = 0, labels = colnames(m), cex.axis = c.cex)
-  if(rnames) axis(4, 1:nrow(m), las = 2, line = -0.5, tick = 0, labels = rownames(m), cex.axis = r.cex)
+    
+  if(cnames==TRUE) axis(3, 1:ncol(m), las = 2, line = -0.5, tick = 0, labels = colnames(m), cex.axis = c.cex)
+    else if(is.character(cnames)) axis(3, 1:ncol(m), las = 2, line = -0.5, tick = 0, labels = cnames, cex.axis = c.cex)
+  if(rnames==TRUE) axis(4, 1:nrow(m), las = 2, line = -0.5, tick = 0, labels = rownames(m), cex.axis = r.cex)
+    else if(is.character(rnames)) axis(4, 1:nrow(m), las = 2, line = -0.5, tick = 0, labels = rnames, cex.axis = r.cex)
+
+
 
   if(!is.null(ff)) {
 	locations <- cumsum(table(ff))[1:(length(levels(ff))-1)] + 0.5

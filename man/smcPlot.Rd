@@ -18,8 +18,8 @@ smcPlot(m, ff = NULL, skip = "NO", scale = c(-3, 3), na.color = par("bg"), margi
   \item{r.cex}{ numeric - number giving the amount by which row names should be scaled relative to the default}
   \item{c.cex}{ numeric - number giving the amount by which column names should be scaled relative to the default }
   \item{show.grid}{ boolean - show grid outlines within plot?}
-  \item{cnames}{ character - vector of alternatvie column names }
-  \item{rnames}{ character - vector of alternative row names}
+  \item{cnames}{ boolean or character - vector of alternatvie column names }
+  \item{rnames}{ boolean or character - vector of alternative row names}
   \item{\dots}{ additional graphical parameters passed along to the plotting function }
 }
 
