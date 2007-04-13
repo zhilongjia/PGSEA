@@ -29,6 +29,7 @@ aggregateExprs(x, package = "hgu133plus2", using = "ENTREZID", FUN, ...)
 \examples{
 
 	if (require(hgu95av2) & require(annaffy)) {
+    library(annaffy)
 		data(aafExpr)
 		str(aafExpr@exprs)
 
