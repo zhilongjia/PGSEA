@@ -31,12 +31,12 @@ aggregateExprs(x, package = "hgu133plus2", using = "ENTREZID", FUN, ...)
 	if (require(hgu95av2) & require(annaffy)) {
     library(annaffy)
 		data(aafExpr)
-		str(aafExpr@exprs)
+		str(assayData(aafExpr)$exprs)
 
 			#list possible values for the "using" argument
 		ls(pos=which(search()=="package:hgu95av2"))
 		
-		convert <- aggregateExprs(aafExpr,"hgu95av2",FUN=mean,na.rm=TRUE)
+		convert <- aggregateExprs(assayData(aafExpr)$exprs,"hgu95av2",FUN=mean,na.rm=TRUE)
 		str(convert)
 	}
 
