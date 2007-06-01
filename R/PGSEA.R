@@ -32,7 +32,9 @@ PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=0.0
     print(i)
     if(class(cl[[i]]) == "smc") {
       clids <- cl[[i]]@ids
-    } else {
+    } else if(class(cl[[i]]) %in% c("GeneColorSet","GeneSet")) {
+      clids <- cl[[i]]@genes
+    } else  {
       clids <- cl[[i]]
     }
     if(options()$verbose)
