@@ -8,7 +8,7 @@ PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=0.0
     else if (class(exprs) == "ExpressionSet") 
         exprs <- assayData(exprs)$exprs
 
-    if(class(cl) != "list") stop("cl need to be a list")  
+    if(!is.list(cl)) stop("cl need to be a list")  
   if(!is.null(ref)) {
     if(!is.numeric(ref))
       stop("column index's required")
@@ -29,11 +29,11 @@ PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=0.0
     p.results <- results
 
   for (i in 1:length(cl)) {
-    print(i)
+#    print(i)
     if(class(cl[[i]]) == "smc") {
       clids <- cl[[i]]@ids
     } else if(class(cl[[i]]) %in% c("GeneColorSet","GeneSet")) {
-      clids <- cl[[i]]@genes
+      clids <- cl[[i]]@geneIds
     } else  {
       clids <- cl[[i]]
     }

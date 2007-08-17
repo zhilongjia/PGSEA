@@ -18,7 +18,7 @@ PGSEA(exprs, cl, range = c(25, 500), ref = NULL, center = TRUE, p.value = 0.005,
 
 \arguments{
   \item{exprs}{ matrix expression data, a numeric matrix, eSet, or exprSet }
-  \item{cl}{ List of class "SMC" objects - concept list }
+  \item{cl}{ gene set list - "GeneSetCollection" or list of "SMC" objects  }
   \item{range}{ a 2 element vector describing the min and max length of concepts to analyze  }
   \item{ref}{a vector containing the index of reference samples from
   which to make comparisons. Defaults to NULL (internally referenced samples)}
@@ -31,11 +31,11 @@ PGSEA(exprs, cl, range = c(25, 500), ref = NULL, center = TRUE, p.value = 0.005,
 \details{
 
   Gene expression values are separated into subsets based on the lists
-  of genes contained in the 'smc' (Simple Molecular Concept) object
-  list. For example, \code{readGmt} can be used to produce a 'smc'
+  of genes contained in the cl argument. This can be a "GeneSetCollection" or a list of "SMC" (Simple Molecular Concept) objects.
+  For example, \code{readGmt} can be used to produce a 'smc'
   object list from a simple tab-delimited text file. The gene
   expression values from each of these gene lists is extracted and a
-  summary statistic is computed for each region.
+  summary statistic is computed for each subset (or region in the case of chromsomal bands/arms).
   
   The expression data must have the same identifiers as the list of
   genes being tested. If they are not, the expression data can be
@@ -43,9 +43,7 @@ PGSEA(exprs, cl, range = c(25, 500), ref = NULL, center = TRUE, p.value = 0.005,
   current annotation environment to convert and condense the gene
   expression data.
   
-  By default the \code{t.test} fuction is applied to the gene set,
-  however the weighted argument uses the method set out by Kim and
-  Volsky. \url{http://www.biomedcentral.com/1471-2105/6/144}
+  By default the method set out by Kim and Volsky \url{http://www.biomedcentral.com/1471-2105/6/144} is applied to the gene set.  If weighted==FALSE than the default \code{t.test} fuction is used.
     
  The function is set up to perform the analysis on individual
   samples. For convenient method to analyze groups of samples, see the
