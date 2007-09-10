@@ -31,7 +31,11 @@ Laboratory of Computational Biology, Van Andel Research Institute
 \end{center}
 
 \section{PGSEA basics}
-	\Rfunction{PGSEA} analyzes gene expression data to determine miss-regulation of defined gene signatures or "molecular concepts". The gene signatures can be from a number of different sources but we have found the most informative ones to be experimentally derived lists of genes. (As opposed to canonical pathways...) There are many such lists that already exist in the literature as well as in publicly accessible repositories. To make use of these valuable resources, we have implemented a class to hold these gene lists called "smc", for "Simple Molecular Concepts." The class contains slots for holding many different types of information about the molecular concept, but all that is necessary is the "ids" slot. This is where the genes are stored. To begin we will show how to create your own basic concept:
+\Rfunction{PGSEA} analyzes gene expression data to determine miss-regulation of defined gene signatures or "molecular concepts". To run PGSEA() all that you need is a matrix of expression data and some lists of related genes. Your expression data must either be in ratio form already or you must include reference samples from which to generate ratios. The identifiers used in your gene lists must also be in the same format as the gene names in your data matrix. All identifiers in the example data and signatures included in this package are Entrez Gene identifiers.
+The actual gene signatures themselves can come from a number of different sources but we have found the most informative ones to be experimentally derived lists of genes. (As opposed to canonical pathways...) There are many such lists that already exist in the literature as well as in publicly accessible repositories. To make use of these valuable resources, we have implemented a class to hold these gene lists called "smc", for "Simple Molecular Concepts." 
+The class contains slots for holding many different types of information about the molecular concept, but all that is necessary is the "ids" slot. This is where the genes are stored. To begin we will show how to create your own basic concept:
+
+
 
 <<echo=TRUE, print=FALSE>>=
 	library(PGSEA)
