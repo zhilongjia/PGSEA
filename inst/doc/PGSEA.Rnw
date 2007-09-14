@@ -92,12 +92,13 @@ The class contains slots for holding many different types of information about t
 
 \section{Concepts compiled at VAI}
 
-	Lastly, we have included a list of concepts that we have manually compiled from various sources. We have found these concepts to very informative in our analysis. 
+	Lastly, we have included a list of concepts that we have manually compiled from various sources. We have found these concepts to very informative in our analysis. These concepts are included in the old "smc" style object as was used previously in PGSEA, and also in the newly created "GeneSetCollection" format. This new format allows much more flexibility and should prove useful as the format develops and matures.
 
 
 <<echo=TRUE, print=FALSE>>=
-	data(VAImcs)
-	pg <- PGSEA(nbEset@exprs,cl=VAImcs,ref=1:5)
+	#data(VAImcs)
+	data(VAIgsc)
+  pg <- PGSEA(nbEset@exprs,cl=VAIgsc,ref=1:5)
 	
 @ 
 	

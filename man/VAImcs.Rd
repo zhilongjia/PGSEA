@@ -3,7 +3,7 @@
 \docType{data}
 \title{ Molecular Concepts prepared at VAI}
 \description{
-  A few simple molecular concepts prepared at VAI.
+  A few gene sets compiled at VAI. We have found useful in our analysis.
 }
 \usage{data(VAImcs)}
 \format{
