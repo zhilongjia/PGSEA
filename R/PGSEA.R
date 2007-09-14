@@ -52,7 +52,7 @@ PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=0.0
     }
 
     texprs <- exprs[ix,]
-
+    if(!is.matrix(texprs)) texprs <-as.matrix(texprs)
 #    if((class(cl[[i]]) == "smc") & (length(cl[[i]]@statistic) == length(clids))) {
 #      if(options()$verbose)
 #        cat("binomial testing\n")
