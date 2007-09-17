@@ -327,6 +327,33 @@ if(!is.null(ff)){
 }
 
 
+kegg2smc <-function (min = 1, max = 284)
+{
+    if (!require(KEGG))
+        stop("library(KEGG) is required...")
+    else {
+        library(KEGG)
+        terms <- mget(ls(KEGGPATHNAME2ID), KEGGPATHNAME2ID, ifnotfound = NA)
+            #necessary to add "hsa" prefix back to KEGG IDs otherwise mget fails to match character string
+      	splice.id <- lapply(terms,function(x) {paste("hsa", x, sep="")})
+        lists <- mget(as.character(splice.id), KEGGPATHID2EXTID, ifnotfound = NA)
+        lengths <- unlist(lapply(lists, length))
+        ix <- which(lengths > min & lengths < max)
+        terms <- terms[ix]
+        lists <- lists[ix]
+        keggList <- list()
+      	keggNames <- names(terms)
+
+        for (i in 1:length(keggNames)) keggList[[i]] <- new("smc",
+            reference = terms[[i]], desc = names(terms[i]),
+            source = "KEGG", identifier = terms[[i]], species = "human",
+            design = "ONTO", ids = lists[[i]])
+        names(keggList) <- unlist(lapply(keggList, function(x) paste(x@reference,
+            x@desc)))
+        return(keggList)
+    }
+}
+
 
 go2smc <- function(min=50,max=200){
 	if(!require(GO))

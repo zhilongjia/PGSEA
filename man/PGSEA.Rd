@@ -72,7 +72,7 @@ kyle.furge@vai.org and karl.dykema@vai.org }
 	datadir <- system.file("data", package = "PGSEA")
 	sample <- readGmt(file.path(datadir, "sample.gmt"))
 	data(nbEset)
-	pg <- PGSEA(nbEset@exprs,cl=sample,ref=1:5)
+	pg <- PGSEA(nbEset,cl=sample,ref=1:5)
 	
 	print(pg[,-c(1:5)])
 

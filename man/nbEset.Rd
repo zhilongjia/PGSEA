@@ -16,6 +16,6 @@ This dataset was retrieved from GEO \url{http://www.ncbi.nlm.nih.gov/geo/query/a
 
 \examples{
 data(nbEset)
-str(nbEset)
+nbEset
 }
 \keyword{datasets}

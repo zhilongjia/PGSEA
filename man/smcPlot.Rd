@@ -32,7 +32,7 @@ datadir <- system.file("data", package = "PGSEA")
 sample <- readGmt(file.path(datadir, "sample.gmt"))
 data(nbEset)
 
-pg <- PGSEA(nbEset@exprs,cl=sample,ref=1:5)
+pg <- PGSEA(nbEset,cl=sample,ref=1:5)
 sub <- factor(c(rep(NA,5),rep("NeuroB",5),rep("NeuroB_MYC+",5)))
 
 smcPlot(pg,sub,scale=c(-10,10),col=.rwb,margins=c(1,1,8,13))

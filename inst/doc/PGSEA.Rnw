@@ -58,7 +58,7 @@ The class contains slots for holding many different types of information about t
 <<echo=TRUE, print=FALSE>>=
 
 	data(nbEset)
-	pg <- PGSEA(nbEset@exprs,cl=sample,ref=1:5)
+	pg <- PGSEA(nbEset,cl=sample,ref=1:5)
 @ 
 	
 
@@ -76,7 +76,7 @@ The class contains slots for holding many different types of information about t
 
 <<echo=TRUE, print=FALSE>>=
 	mcs <- go2smc()[1:10]
-	pg <- PGSEA(nbEset@exprs,cl=mcs,ref=1:5)
+	pg <- PGSEA(nbEset,cl=mcs,ref=1:5)
 	
 @ 
 	
@@ -98,7 +98,7 @@ The class contains slots for holding many different types of information about t
 <<echo=TRUE, print=FALSE>>=
 	#data(VAImcs)
 	data(VAIgsc)
-  pg <- PGSEA(nbEset@exprs,cl=VAIgsc,ref=1:5)
+  pg <- PGSEA(nbEset,cl=VAIgsc,ref=1:5)
 	
 @ 
 	
