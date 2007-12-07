@@ -18,7 +18,7 @@
 \examples{
 data(VAIgsc)
 summary(VAIgsc)
-VAIgsc[[1]]
+details(VAIgsc[[1]])
 
 }
 \keyword{datasets}
