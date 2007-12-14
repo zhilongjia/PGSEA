@@ -139,10 +139,10 @@ Instead of using our included example gene sets, one may wish to go another rout
 
 <<echo=TRUE, print=FALSE>>=
 
-#gos <- go2smc()
-#pg <- PGSEA(eset, gos, ref=which(subtype=="NO"))
-#pgNF <- PGSEA(eset, gos, ref=which(subtype=="NO"), p.value=NA)
-load("ABC.rda")
+gos <- go2smc()
+pg <- PGSEA(eset, gos, ref=which(subtype=="NO"))
+pgNF <- PGSEA(eset, gos, ref=which(subtype=="NO"), p.value=NA)
+#load("ABC.rda")
 design <- model.matrix(~ -1+factor(subtype))
 colnames(design) <- names(table(subtype))
 fit <- lmFit(pgNF, design)
