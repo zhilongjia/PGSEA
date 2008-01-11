@@ -41,25 +41,18 @@ Online gene expression data repositories represent a great wealth of knowledge a
 library(PGSEA)
 library(GEOquery)
 library(GSEABase)
-gse <- getGEO("GSE7023")
+gse <- getGEO("GSE7023",GSEMatrix=T)
 #load("gse.rda")
 @
 Next we coerce the raw data from GEO into an ExpressionSet which is the most recent class for holding gene expression data within Bioconductor. See the GEOquery vignette for more information. 
 
 <<echo=TRUE, print=FALSE>>=
-probesets <- Table(GPLList(gse)[[1]])$ID
-data.matrix <- log2(do.call("cbind", lapply(GSMList(gse), function(x) {
- tab <- Table(x)
- mymatch <- match(probesets,  tab$ID_REF)
- return(tab$VALUE[mymatch])
-})))
-rownames(data.matrix) <- as.character(probesets)
-colnames(data.matrix) <- names(GSMList(gse))
-pdata <- data.frame(samples = names(GSMList(gse)))
 
-subtype <- gsub("\\.","_",unlist(lapply(GSMList(gse),function(x) gsub("subtype: ","", x@header$characteristics_ch1))))
-pheno <- new("AnnotatedDataFrame", data=data.frame(subtype), varMetadata=data.frame(labelDescription=c("Renal Cell Carcinoma Subtype (NO=normal tissue)")))
-eset <- new("ExpressionSet", exprs = data.matrix, phenoData = pheno)
+subtype <- gsub("\\.", "_",gsub("subtype: ", "", gse[[1]]@phenoData@data$"characteristics_ch1"))
+pheno <- new("AnnotatedDataFrame", data = data.frame(subtype), varMetadata = data.frame(labelDescription="subtype")
+rownames(pheno@data) <- colnames(gse[[1]]@assayData$exprs)
+eset <- new("ExpressionSet", exprs = gse[[1]]@assayData$exprs, phenoData = pheno)
+
 @
 
 Next we must load the gene sets to be used, in this case we will use some included example gene sets that we were able to curate from various publications. This list of gene sets is by no means an extensive or comprehensive list; it is merely included for example purposes. Information on the creation of each gene set has not been included, but may be available upon request.
