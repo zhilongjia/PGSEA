@@ -13,13 +13,14 @@
    
 }
 \usage{
-PGSEA(exprs, cl, range = c(25, 500), ref = NULL, center = TRUE, p.value = 0.005, weighted = TRUE, ...)
+PGSEA(exprs, cl, range = c(25, 500), ref = NULL, center = TRUE, p.value = 0.005, weighted = TRUE, enforceRange=TRUE,...)
 }
 
 \arguments{
   \item{exprs}{ matrix expression data, a numeric matrix, eSet, or exprSet }
   \item{cl}{ gene set list - "GeneSetCollection" or list of "SMC" objects  }
   \item{range}{ a 2 element vector describing the min and max length of concepts to analyze  }
+  \item{enforceRange}{ boolean - if TRUE, the expression matrix must contain data for the proper number of genes as set by the range argument to return a signifcant result. (this argument is used for data that contains NA's...)} 
   \item{ref}{a vector containing the index of reference samples from
   which to make comparisons. Defaults to NULL (internally referenced samples)}
   \item{center}{ boolean - median center gene expression matrix columns

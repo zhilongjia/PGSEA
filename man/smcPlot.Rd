@@ -5,7 +5,7 @@
   This basic function will plot results from PGSEA with easy altering of margins, colors, and text.
 }
 \usage{
-smcPlot(m, ff = NULL, skip = "NO", scale = c(-3, 3), na.color = par("bg"), margins = NULL, r.cex = NULL, c.cex = NULL, show.grid = F, cnames = TRUE, rnames = TRUE, ...)
+smcPlot(m, ff = NULL, skip = "NO", scale = c(-3, 3), na.color = par("bg"), margins = NULL, r.cex = NULL, c.cex = NULL, show.grid = F, cnames = TRUE, rnames = TRUE,grid.lty=3, ...)
 }
 
 \arguments{
@@ -20,6 +20,9 @@ smcPlot(m, ff = NULL, skip = "NO", scale = c(-3, 3), na.color = par("bg"), margi
   \item{show.grid}{ boolean - show grid outlines within plot?}
   \item{cnames}{ boolean or character - vector of alternatvie column names }
   \item{rnames}{ boolean or character - vector of alternative row names}
+  \item{grid.lty}{ numeric - line type of the grid lines}
+
+
   \item{\dots}{ additional graphical parameters passed along to the plotting function }
 }
 

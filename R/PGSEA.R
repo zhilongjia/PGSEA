@@ -1,7 +1,7 @@
 
 setClass("smc",representation(reference="character",desc="character",source="character",design="character",identifier="character",species="character",data="character",private="character", creator="character",ids="vector"))
 
-PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=0.005, weighted=TRUE, ...) {
+PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=0.005, weighted=TRUE, enforceRange=TRUE,...) {
 
  if (class(exprs) == "exprSet") 
         exprs <- exprs
@@ -42,25 +42,18 @@ PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=0.0
     ix <- match(clids,rownames(exprs))
     ix <- ix[!is.na(ix)]
     present <- sum(!is.na(ix))
-    if(present < range[1] & options()$verbose) {
-      cat("Skipping region ",i," because too small-",present,",\n")
+    if(present < range[1]) {
+      if(options()$verbose) cat("Skipping region ",i," because too small-",present,",\n")
       next
     }
-    if(present > range[2] & options()$verbose) {
-      cat("Skipping region ",i," because too large-",present,"\n")
+    if(present > range[2]) {
+       if(options()$verbose) cat("Skipping region ",i," because too large-",present,"\n")
       next
     }
 
     texprs <- exprs[ix,]
     if(!is.matrix(texprs)) texprs <-as.matrix(texprs)
-#    if((class(cl[[i]]) == "smc") & (length(cl[[i]]@statistic) == length(clids))) {
-#      if(options()$verbose)
-#        cat("binomial testing\n")
-#    ix <- match(rownames(texprs),clids)
-#      ix <- ix[!is.na(ix)]
-#      texprs <- sweep(texprs,1,cl[[i]]@statistic[ix],"*")
-#    }
-    
+
 	if(!weighted) stat <- try(apply(texprs, 2, t.test,...))
 	else {
 		try(mod <- (length(clids) ^ (1/2)) / sd(exprs,na.rm=TRUE))
@@ -74,8 +67,6 @@ PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=0.0
 		names(stat) <- names(stat2)
 		
 	}
-
-	    
     if (is.list(stat)) {
       ps <- unlist(lapply(stat, function(x) x$p.value))
       stat <- unlist(lapply(stat, function(x) x$statistic))
@@ -88,12 +79,16 @@ PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=0.0
       }
     }
     results[i,] <- as.numeric(stat)
+   if(enforceRange) {
+    for(w in 1:ncol(texprs)) {
+      if(sum(!is.na(texprs[,w])) < range[1] | sum(!is.na(texprs[,w])) > range[2] ) 
+      results[i,w] <- NA
+    }
+   }
   }
- if(is.logical(p.value) & !is.na(p.value))
-    return(list(results=results,p.results=p.results))
-  return(results)
+ if(is.logical(p.value) & !is.na(p.value)) return(list(results=results,p.results=p.results))
+ return(results)
 }
-
 
 
 aggregateExprs <- function(x,package="hgu133plus2",using="ENTREZID",FUN,...) {
@@ -236,7 +231,7 @@ convertSmc <- function(mcs,fromSpecies="h", toSpecies="r",hgX="./homologene.data
 	
 }
 
-smcPlot <- function(m,ff=NULL,skip="NO",scale=c(-3,3),na.color=par("bg"),margins=NULL,r.cex=NULL,c.cex=NULL,show.grid=F,cnames=TRUE,rnames=TRUE,...){
+smcPlot <- function(m,ff=NULL,skip="NO",scale=c(-3,3),na.color=par("bg"),margins=NULL,r.cex=NULL,c.cex=NULL,show.grid=F,cnames=TRUE,rnames=TRUE,grid.lty=3,...){
   hold <- as.matrix(m[nrow(m):1,])
   colnames(hold) <- colnames(m)
   m <- hold
@@ -308,8 +303,7 @@ if(!is.null(ff)){
     image(1:ncol(m), 1:nrow(m), t(na.m), axes = FALSE, , 
           xlab = ",", ylab = ",", col = na.color, add = T)
   }
-  if(show.grid) 
-    grid(ncol(m),nrow(m),col="slategrey")
+  if(show.grid) grid(ncol(m),nrow(m),col="slategrey",lty=grid.lty)
     
   if(cnames==TRUE) axis(3, 1:ncol(m), las = 2, line = -0.5, tick = 0, labels = colnames(m), cex.axis = c.cex)
     else if(is.character(cnames)) axis(3, 1:ncol(m), las = 2, line = -0.5, tick = 0, labels = cnames, cex.axis = c.cex)
