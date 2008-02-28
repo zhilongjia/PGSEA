@@ -3,12 +3,11 @@ setClass("smc",representation(reference="character",desc="character",source="cha
 
 PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=0.005, weighted=TRUE, enforceRange=TRUE,...) {
 
- if (class(exprs) == "exprSet") 
-        exprs <- exprs
-    else if (class(exprs) == "ExpressionSet") 
-        exprs <- assayData(exprs)$exprs
+  if (is(exprs, "ExpressionSet"))
+    exprs <- exprs(exprs)
 
-    if(!is.list(cl)) stop("cl need to be a list")  
+  if(!is.list(cl))
+    stop("cl need to be a list")  
   if(!is.null(ref)) {
     if(!is.numeric(ref))
       stop("column index's required")
@@ -29,7 +28,6 @@ PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=0.0
     p.results <- results
 
   for (i in 1:length(cl)) {
-#    print(i)
     if(class(cl[[i]]) == "smc") {
       clids <- cl[[i]]@ids
     } else if(class(cl[[i]]) %in% c("GeneColorSet","GeneSet")) {
@@ -92,9 +90,9 @@ PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=0.0
 
 
 aggregateExprs <- function(x,package="hgu133plus2",using="ENTREZID",FUN,...) {
-  if(class(x) != "matrix" & class(x) != "exprSet")
-    stop("need matrix or exprSet")
-  if(class(x) == "exprSet" & is.null(package))
+  if(class(x) != "matrix" && !is(x, "ExpressionSet"))
+    stop("need matrix or ExpressionSet")
+  if(is.null(package) && is(x, "ExpressionSet"))
     package <- annotation(x)
   if(is.null(package))
     stop("annotation package name is required")
@@ -103,9 +101,9 @@ aggregateExprs <- function(x,package="hgu133plus2",using="ENTREZID",FUN,...) {
   pPos <- paste("package",package,sep=":")
   nEnv <- paste(package,using,sep="")
   Env <- get(nEnv,pos=pPos)
-  if(class(x) == "exprSet") {
-    ids <- geneNames(x)
-    x <- x@exprs
+  if(is(x, "ExpressionSet")) {
+    ids <- featureNames(x)
+    x <- exprs(x)
   } else {
     ids <- rownames(x)
   }

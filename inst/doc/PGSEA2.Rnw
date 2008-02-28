@@ -7,8 +7,6 @@
 % \VignetteKeywords{Expression, chromosome, idiogram}
 % \VignettePackage{PGSEA}
 
-
-
 \documentclass{article}
 \SweaveOpts{eps=false}
 
@@ -19,8 +17,6 @@
 \newcommand{\Rfunction}[1]{{\texttt{#1}}}
 \newcommand{\Robject}[1]{{\texttt{#1}}}
 \newcommand{\Rpackage}[1]{{\textit{#1}}}
-
-
 
 \begin{document}
 \title{PGSEA Example Workflow Using Expression Data from GEO}
@@ -49,7 +45,7 @@ Next we coerce the raw data from GEO into an ExpressionSet which is the most rec
 <<echo=TRUE, print=FALSE>>=
 
 subtype <- gsub("\\.", "_",gsub("subtype: ", "", gse[[1]]@phenoData@data$"characteristics_ch1"))
-pheno <- new("AnnotatedDataFrame", data = data.frame(subtype), varMetadata = data.frame(labelDescription="subtype")
+pheno <- new("AnnotatedDataFrame", data = data.frame(subtype), varMetadata = data.frame(labelDescription="subtype"))
 rownames(pheno@data) <- colnames(gse[[1]]@assayData$exprs)
 eset <- new("ExpressionSet", exprs = gse[[1]]@assayData$exprs, phenoData = pheno)
 
@@ -151,7 +147,6 @@ The linear model approach above will highlight the differences between subtypes 
 smcPlot(pg[topTable(fit,n=30,resort.by="logFC")$ID,], factor(subtype,levels=c("P1","P2B")), col=.rwb, scale=c(-15, 15), margins=c(1, 1, 6, 19), show.grid=T, r.cex=.75)
 @
 \end{center}
-
 
 
 \end{document}
