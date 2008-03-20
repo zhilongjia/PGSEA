@@ -37,18 +37,16 @@ Online gene expression data repositories represent a great wealth of knowledge a
 library(PGSEA)
 library(GEOquery)
 library(GSEABase)
-gse <- getGEO("GSE7023",GSEMatrix=T)
+gse <- getGEO("GSE7023",GSEMatrix=TRUE)
 #load("gse.rda")
 @
-Next we coerce the raw data from GEO into an ExpressionSet which is the most recent class for holding gene expression data within Bioconductor. See the GEOquery vignette for more information. 
+Next we process the raw data from GEO to generate the phenoData for the ExpressionSet, an object that holds gene expression data within Bioconductor. See the GEOquery vignette for more information. 
 
 <<echo=TRUE, print=FALSE>>=
-
-subtype <- gsub("\\.", "_",gsub("subtype: ", "", gse[[1]]@phenoData@data$"characteristics_ch1"))
+subtype <- gsub("\\.", "_",gsub("subtype: ", "", phenoData(gse[[1]])$"characteristics_ch1"))
 pheno <- new("AnnotatedDataFrame", data = data.frame(subtype), varMetadata = data.frame(labelDescription="subtype"))
-rownames(pheno@data) <- colnames(gse[[1]]@assayData$exprs)
-eset <- new("ExpressionSet", exprs = gse[[1]]@assayData$exprs, phenoData = pheno)
-
+rownames(pheno@data) <- colnames(exprs(gse[[1]]))
+eset <- new("ExpressionSet", exprs = exprs(gse[[1]]), phenoData = pheno)
 @
 
 Next we must load the gene sets to be used, in this case we will use some included example gene sets that we were able to curate from various publications. This list of gene sets is by no means an extensive or comprehensive list; it is merely included for example purposes. Information on the creation of each gene set has not been included, but may be available upon request.
@@ -78,7 +76,7 @@ Next we will want to create an attractive plot so that we can visually interpret
 
 \begin{center}
 <<fig=TRUE, echo=TRUE>>=
-range(pg, finite=T)
+range(pg, finite=TRUE)
 smcPlot(pg, col=.rwb, scale=c(-15, 15))
 @
 \end{center}
@@ -87,7 +85,7 @@ Next with the addition of a few different arguments we can make this plot look m
 
 \begin{center}
 <<fig=TRUE, echo=TRUE>>=
-smcPlot(pg, factor(subtype), col=.rwb, scale=c(-15, 15), margins=c(1, 1, 6, 9), show.grid=T, r.cex=.75)
+smcPlot(pg, factor(subtype), col=.rwb, scale=c(-15, 15), margins=c(1, 1, 6, 9), show.grid=TRUE, r.cex=.75)
 @
 \end{center}
 
@@ -107,14 +105,14 @@ contrast.matrix <- makeContrasts(P2B-NO , levels=design)
 fit <- contrasts.fit(fit, contrast.matrix)
 fit <- eBayes(fit)
 
-topTable(fit, n=10)[,c("ID","logFC","t","adj.P.Val")]
+topTable(fit, n=10)[,c("logFC","t","adj.P.Val")]
 @
 
-Now that we have figured out the significantly different gene sets, we can grab the "ID" column from "topTable" and insert it into our plotting function.
+Now that we have figured out the significantly different gene sets, we can grab the rownames from "topTable" and insert it into our plotting function.
 
 \begin{center}
 <<fig=TRUE, echo=TRUE>>=
-smcPlot(pg[topTable(fit, n=10)$ID,], factor(subtype,levels=c("P1","P2B")), col=.rwb, scale=c(-15, 15), margins=c(1, 1, 6, 19), show.grid=T, r.cex=.75)
+smcPlot(pg[as.numeric(rownames(topTable(fit, n=10))),], factor(subtype,levels=c("P1","P2B")), col=.rwb, scale=c(-15, 15), margins=c(1, 1, 6, 19), show.grid=TRUE, r.cex=.75)
 @
 \end{center}
 
@@ -127,7 +125,6 @@ The "FH.1" gene sets were created from gene expression data generated from fumar
 Instead of using our included example gene sets, one may wish to go another route and use a large database such as "GO". We have included a helper function to quickly generate gene sets from this database. 
 
 <<echo=TRUE, print=FALSE>>=
-
 gos <- go2smc()
 pg <- PGSEA(eset, gos, ref=which(subtype=="NO"))
 pgNF <- PGSEA(eset, gos, ref=which(subtype=="NO"), p.value=NA)
@@ -144,7 +141,7 @@ The linear model approach above will highlight the differences between subtypes 
 
 \begin{center}
 <<fig=TRUE, echo=TRUE>>=
-smcPlot(pg[topTable(fit,n=30,resort.by="logFC")$ID,], factor(subtype,levels=c("P1","P2B")), col=.rwb, scale=c(-15, 15), margins=c(1, 1, 6, 19), show.grid=T, r.cex=.75)
+smcPlot(pg[as.numeric(rownames(topTable(fit,n=30,resort.by="logFC"))),], factor(subtype,levels=c("P1","P2B")), col=.rwb, scale=c(-15, 15), margins=c(1, 1, 6, 19), show.grid=TRUE, r.cex=.75)
 @
 \end{center}
 
