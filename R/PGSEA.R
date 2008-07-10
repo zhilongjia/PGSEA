@@ -98,7 +98,10 @@ aggregateExprs <- function(x,package="hgu133plus2",using="ENTREZID",FUN,...) {
     stop("annotation package name is required")
   if(!require(package,character.only=TRUE))
     stop(package," is not available")
+
   pPos <- paste("package",package,sep=":")
+  if(grep(".*db",package)) package <- gsub(".db","",package)
+  
   nEnv <- paste(package,using,sep="")
   Env <- get(nEnv,pos=pPos)
   if(is(x, "ExpressionSet")) {
@@ -107,7 +110,9 @@ aggregateExprs <- function(x,package="hgu133plus2",using="ENTREZID",FUN,...) {
   } else {
     ids <- rownames(x)
   }
-  lls <- unlist(mget(ids,env=Env,ifnotfound=NA))
+  lls <- mget(ids,env=Env,ifnotfound=NA)
+  if(length(lls)!=length(unlist(lls))) for(i in 1:length(lls)) lls[[i]] <- lls[[i]][1]
+  lls <- unlist(lls)
   f <- factor(lls)
   undupx <- aggregate(x,by=list(f),FUN,...)
   rownames(undupx) <- as.character(undupx[,1])
