@@ -353,10 +353,10 @@ kegg2smc <-function (min = 1, max = 284)
 
 
 go2smc <- function(min=50,max=200){
-	if(!require(GO))
-		stop("library(GO) is required...")
+	if(!require(GO.db))
+		stop("library(GO.db) is required...")
 	else {
-		library(GO)
+		library(GO.db)
 		terms <- mget(ls(GOTERM),GOTERM,ifnotfound=NA)
 		lists <- mget(names(terms),GOALLENTREZID,ifnotfound=NA)
 		lengths <- unlist(lapply(lists,length))
