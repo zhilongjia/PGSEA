@@ -5,12 +5,13 @@
   This function creates "smc" objects from the "GO" Bioconductor library.
 }
 \usage{
-go2smc(min = 50, max = 200)
+go2smc(min = 50, max = 200,organism="human")
 }
 
 \arguments{
   \item{min}{ numeric - minimum length of ids to be included }
   \item{max}{ numeric - maximum length of ids to be included  }
+  \item{organism}{ character - organism }
 }
 
 \value{

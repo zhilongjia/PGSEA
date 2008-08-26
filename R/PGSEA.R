@@ -324,12 +324,12 @@ if(!is.null(ff)){
 }
 
 
-kegg2smc <-function (min = 1, max = 284)
-{
-    if (!require(KEGG))
-        stop("library(KEGG) is required...")
+kegg2smc <-function (min = 1, max = 284,organism="human"){
+    if(organism!="human") stop("Only human for now..")
+    if (!require(KEGG.db))
+        stop("library(KEGG.db) is required...")
     else {
-        library(KEGG)
+        library(KEGG.db)
         terms <- mget(ls(KEGGPATHNAME2ID), KEGGPATHNAME2ID, ifnotfound = NA)
             #necessary to add "hsa" prefix back to KEGG IDs otherwise mget fails to match character string
       	splice.id <- lapply(terms,function(x) {paste("hsa", x, sep="")})
@@ -352,13 +352,17 @@ kegg2smc <-function (min = 1, max = 284)
 }
 
 
-go2smc <- function(min=50,max=200){
-	if(!require(GO.db))
-		stop("library(GO.db) is required...")
+go2smc <- function(min=50,max=200,organism="human"){
+  if(organism!="human") stop("Only human for now..")
+	if(!require(org.Hs.eg.db)) stop("library(org.Hs.eg.db) is required...")
+	if(!require(GO.db)) stop("library(GO.db) is required...")
 	else {
 		library(GO.db)
+		library(org.Hs.eg.db)
+#		terms <- mget(ls(GOTERM),GOTERM@datacache,ifnotfound=NA)
+#		lists <- mget(names(terms),org.Hs.egGO2ALLEGS@datacache,ifnotfound=NA)
 		terms <- mget(ls(GOTERM),GOTERM,ifnotfound=NA)
-		lists <- mget(names(terms),GOALLENTREZID,ifnotfound=NA)
+  	lists <- mget(names(terms),org.Hs.egGO2ALLEGS,ifnotfound=NA)
 		lengths <- unlist(lapply(lists,length))
 		
 		ix <- which(lengths > min & lengths < max)

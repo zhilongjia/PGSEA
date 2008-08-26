@@ -6,12 +6,13 @@
   This function creates "smc" objects from the "KEGG" Bioconductor library.
 }
 \usage{
-smc <- kegg2smc(min = 1, max = 284)
+smc <- kegg2smc(min = 1, max = 284,organism="human")
 }
 
 \arguments{
   \item{min}{ numeric - minimum length of ids to be included }
   \item{max}{ numeric - maximum length of ids to be included  }
+  \item{organism}{ character - organism }
 }
 
 \value{
