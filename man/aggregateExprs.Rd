@@ -23,16 +23,16 @@ aggregateExprs(x, package = "hgu133plus2", using = "ENTREZID", FUN, \dots)
 }
 \author{ Kyle Furge <kyle.furge@vai.org> and Karl Dykema <karl.dykema@vai.org> }
 \examples{
-	if (require(hgu95av2) & require(annaffy)) {
+	if (require(hgu95av2.db) & require(annaffy)) {
 		library(annaffy)
 		data(aafExpr)
 		class(exprs(aafExpr))
 		exprs(aafExpr)[1:4, 1:4]
 
 		#list possible values for the "using" argument
-		ls(pos=which(search()=="package:hgu95av2"))
+		ls(pos=which(search()=="package:hgu95av2.db"))
 
-		convert <- aggregateExprs(exprs(aafExpr),"hgu95av2",FUN=mean,na.rm=TRUE)
+		convert <- aggregateExprs(exprs(aafExpr),"hgu95av2.db",FUN=mean,na.rm=TRUE)
 		convert[1:4,1:4]
 	}
 }
