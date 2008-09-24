@@ -100,7 +100,7 @@ aggregateExprs <- function(x,package="hgu133plus2",using="ENTREZID",FUN,...) {
     stop(package," is not available")
 
   pPos <- paste("package",package,sep=":")
-  if(grep(".*db",package)) package <- gsub(".db","",package)
+  if(length(grep(".*db",package))) package <- gsub(".db","",package)
   
   nEnv <- paste(package,using,sep="")
   Env <- get(nEnv,pos=pPos)
