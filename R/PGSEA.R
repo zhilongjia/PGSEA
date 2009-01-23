@@ -213,8 +213,8 @@ scanSmc <- function(smcList,scanSlot="private",scanFor="no"){
 
 convertSmc <- function(mcs,fromSpecies="h", toSpecies="r",hgX="./homologene.data"){
 
-	fromSpecies <- switch(fromSpecies, h =9606, r = 10116, m = 10090)
-	toSpecies <- switch(toSpecies, h =9606, r = 10116, m = 10090)
+	fromSpecies <- switch(fromSpecies, h =9606, r = 10116, m = 10090,c=9615)
+	toSpecies <- switch(toSpecies, h =9606, r = 10116, m = 10090,c=9615)
 
 	hgX <- read.delim(hgX,col.names=c("HID","TaxID","GeneID","Symbol" ,"Protein","Protein-accession",sep="|"))[,1:3]
 	
