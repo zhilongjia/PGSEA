@@ -1,13 +1,13 @@
 Package: PGSEA
 Type: Package
 Title: Parametric Gene Set Enrichment Analysis
-Version: 1.13.1
+Version: 1.13.2
 Author: Kyle Furge <kyle.furge@vai.org> and Karl Dykema <karl.dykema@vai.org>
 Maintainer: Karl Dykema <karl.dykema@vai.org>
 Description: Parametric Analysis of Gene Set Enrichment
 Depends: AnnotationDbi, methods, Biobase (>= 2.5.5)
 Suggests:  GO.db, GSEABase, KEGG.db, GEOquery, org.Hs.eg.db, hgu95av2.db, Ruuid
-License: GPL2
+License: GPL-2
 ZipData: no
 biocViews: Microarray
 LazyData: no
