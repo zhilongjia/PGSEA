@@ -234,7 +234,7 @@ convertSmc <- function(mcs,fromSpecies="h", toSpecies="r",hgX="./homologene.data
 	
 }
 
-smcPlot <- function(m,ff=NULL,skip="NO",scale=c(-3,3),na.color=par("bg"),margins=NULL,r.cex=NULL,c.cex=NULL,show.grid=F,cnames=TRUE,rnames=TRUE,grid.lty=3,...){
+smcPlot <- function(m,ff=NULL,skip="NO",scale=c(-3,3),na.color=par("bg"),margins=NULL,r.cex=NULL,c.cex=NULL,show.grid=F,cnames=TRUE,rnames=TRUE,grid.lty=3,clust=FALSE,...){
   hold <- as.matrix(m[nrow(m):1,])
   colnames(hold) <- colnames(m)
   m <- hold
@@ -251,8 +251,7 @@ if(!is.null(ff)){
   for(i in levels(ff)) {
     if (i %in% skip) next;
     ix <- which(ff==i)
-    if(length(ix) == 0)
-      warning(i," is not found")
+    if(length(ix) == 0) warning(i," is not found")
     end <- start + length(ix) -1
     new.ix[start:end] <- ix
     start <- end + 1
@@ -270,6 +269,26 @@ if(!is.null(ff)){
     cn[ix] <- colnames
   }
   colnames(m) <- cn
+}
+
+  #want to cluster?
+if(clust){
+    #also order based on a factor?
+  if(!is.null(ff)){
+    cn <- colnames(m)
+    for(i in levels(ff)) {
+      ix <- which(ff==i)
+      clust.gx <- m[,ix]
+      hc <- hclust(dist(t(clust.gx),method="euc"))
+      m[,ix] <- m[,ix[hc$order]]
+    }      
+    colnames(m) <- cn
+  }
+    #no factor ordering
+  if(is.null(ff)){
+      hc <- hclust(dist(t(m),method="euc"))
+      m[,] <- m[,hc$order]
+  }
 }
 
   if(!is.null(scale)) {
