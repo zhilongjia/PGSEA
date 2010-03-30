@@ -295,7 +295,7 @@ if(clust){
     if(length(scale) == 2) {
       m[m < scale[1]] <- scale[1]
       m[m > scale[2]] <- scale[2]      
-      GS <- rep(0,length=ncol(m))
+      GS <- rep(NA,length=ncol(m))
       gs <- scale[1]:scale[2]
       #GS[1:length(gs)] <- gs
       GS[1] <- scale[1]
