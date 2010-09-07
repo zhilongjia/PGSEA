@@ -54,10 +54,10 @@ PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=0.0
 
 	if(!weighted) stat <- try(apply(texprs, 2, t.test,...))
 	else {
-		try(mod <- (length(clids) ^ (1/2)) / sd(exprs,na.rm=TRUE))
-		try(m <- apply(texprs, 2, mean,na.rm=TRUE) - mean(exprs,na.rm=TRUE))
+		try(mod <- (length(ix) ^ (1/2)) / sd(exprs,na.rm=TRUE))
+		try(m <- apply(texprs, 2, mean,na.rm=TRUE) - apply(exprs,2,mean,na.rm=TRUE))
 		stat2 <- m * mod
-		p.val <- dt(stat2,length(clids))
+    p.val <- 2*pnorm(-abs(stat2))
 		stat <- list()
 		for(q in 1:length(stat2)){
 			stat[[q]] <- list(statistic=stat2[q],p.value=p.val[q])
@@ -87,6 +87,8 @@ PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=0.0
  if(is.logical(p.value) & !is.na(p.value)) return(list(results=results,p.results=p.results))
  return(results)
 }
+
+
 
 
 aggregateExprs <- function(x,package="hgu133plus2",using="ENTREZID",FUN,...) {
