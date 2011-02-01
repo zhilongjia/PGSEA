@@ -38,7 +38,7 @@ PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=0.0
     if(options()$verbose)
       cat("Testing region ", i, "\n")
     ix <- match(clids,rownames(exprs))
-    ix <- ix[!is.na(ix)]
+    ix <- unique(ix[!is.na(ix)])
     present <- sum(!is.na(ix))
     if(present < range[1]) {
       if(options()$verbose) cat("Skipping region ",i," because too small-",present,",\n")
@@ -280,9 +280,12 @@ if(clust){
     cn <- colnames(m)
     for(i in levels(ff)) {
       ix <- which(ff==i)
-      clust.gx <- m[,ix]
-      hc <- hclust(dist(t(clust.gx),method="euc"))
-      m[,ix] <- m[,ix[hc$order]]
+      if(length(ix) > 3){  
+        clust.gx <- m[,ix]
+        hc <- hclust(dist(t(clust.gx),method="euc"))
+        m[,ix] <- m[,ix[hc$order]]
+      }
+    
     }      
     colnames(m) <- cn
   }
@@ -413,3 +416,4 @@ go2smc <- function(min=50,max=200,organism="human"){
 ,"#FF9595","#FF8A8A","#FF8080","#FF7575","#FF6A6A","#FF6060","#FF5555"
 ,"#FF4A4A","#FF4040","#FF3535","#FF2B2B","#FF2020","#FF1515","#FF0B0B"
 ,"#FF0000")
+
