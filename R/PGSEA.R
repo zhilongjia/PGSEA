@@ -4,7 +4,7 @@ setClass("smc",representation(reference="character",desc="character",source="cha
  
   
   
-PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=NA, method="logFC.z", enforceRange=TRUE,...) {
+PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=0.005, weighted=TRUE, enforceRange=TRUE,...) {
 
   if (is(exprs, "ExpressionSet"))
     exprs <- exprs(exprs)
@@ -21,13 +21,8 @@ PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=NA,
     ref_mean <- apply(exprs[,ref],1,mean,na.rm=TRUE)
     exprs <- sweep(exprs,1, ref_mean,"-")
   }
-  if(center & method=="tstat.z") 
-     warning("Centering t-statistics is not the preferred method")
-  if(center) {
+  if(center)
     exprs <- scale(exprs,scale=FALSE)
-    if(options()$verbose)
-      cat("Centering ratios...","\n")
-  }
   results <- matrix(NA,length(cl),ncol(exprs))
   rownames(results) <- names(cl)
   colnames(results) <- colnames(exprs)
@@ -47,7 +42,7 @@ PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=NA,
       cat("Testing region ", i, "\n")
     ix <- match(clids,rownames(exprs))
     ix <- unique(ix[!is.na(ix)])
-    present <- length(ix)
+    present <- sum(!is.na(ix))
     if(present < range[1]) {
       if(options()$verbose) cat("Skipping region ",i," because too small-",present,",\n")
       next
@@ -58,41 +53,38 @@ PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=NA,
     }
 
     texprs <- exprs[ix,]
+    if(any(is.na(texprs))) cat("Warning - 'NA' values within expression data, enrichment scores are estimates only.\n")
+    if(!is.matrix(texprs)) texprs <-as.matrix(texprs)
 
-    if(any(is.na(texprs))) warning("Warning: 'NA' values in expression data - enrichment scores are estimates only.")
- 
-    if(!is.matrix(texprs)) texprs <-as.matrix(texprs) #FIXME: Column or row
-    stat <- rep(NA,ncol(texprs))
-    ps <- rep(NA,ncol(texprs))
-    if(method=="logFC.t") { ## One-sided t-test
-      res <- try(apply(texprs, 2, t.test,...))
-      ps <- unlist(lapply(res, function(x) x$p.value))
-      stat <- unlist(lapply(res, function(x) x$statistic))
-    }
-    if(method=="logFC.z") { ## Kim and Volzy Z-score
-       try(mod <- sqrt(present) / sd(exprs,na.rm=TRUE))
-       try(m <- apply(texprs, 2, mean,na.rm=TRUE) - apply(exprs,2,mean,na.rm=TRUE))
-       stat <- m * mod
-       ps <- 2*pnorm(-abs(stat))
-    }
-    if(method=="tstat.z") { ## Irizzary et al Z-score
-       stat <- sqrt(present)*apply(texprs,2,mean,na.rm=T)
-       ps <- 2*pnorm(-abs(stat))
-    }
-    if (!is.na(p.value)) {
+	if(!weighted) stat <- try(apply(texprs, 2, t.test,...))
+	else {
+		try(mod <- (length(ix) ^ (1/2)) / sd(exprs,na.rm=TRUE))
+		try(m <- apply(texprs, 2, mean,na.rm=TRUE) - apply(exprs,2,mean,na.rm=TRUE))
+		stat2 <- m * mod
+    p.val <- 2*pnorm(-abs(stat2))
+		stat <- list()
+		for(q in 1:length(stat2)){
+			stat[[q]] <- list(statistic=stat2[q],p.value=p.val[q])
+		}
+		names(stat) <- names(stat2)
+		
+	}
+    if (is.list(stat)) {
+      ps <- unlist(lapply(stat, function(x) x$p.value))
+      stat <- unlist(lapply(stat, function(x) x$statistic))
+      if (!is.na(p.value)) {
         if(is.numeric(p.value)) {
           stat[ps > p.value] <- NA
         } else {
           p.results[i,] <- ps
         }
+      }
     }
-   results[i,] <- as.numeric(stat)
+    results[i,] <- as.numeric(stat)
    if(enforceRange) {
     for(w in 1:ncol(texprs)) {
-      if(sum(!is.na(texprs[,w])) < range[1] | sum(!is.na(texprs[,w])) > range[2]) {
-         if(options()$verbose) cat("Skipping region ",i," because too many NAs present\n")
-         results[i,w] <- NA
-      }
+      if(sum(!is.na(texprs[,w])) < range[1] | sum(!is.na(texprs[,w])) > range[2] ) 
+      results[i,w] <- NA
     }
    }
   }
