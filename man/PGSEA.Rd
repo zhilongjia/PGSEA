@@ -50,6 +50,11 @@ PGSEA(exprs, cl, range = c(25, 500), ref = NULL, center = TRUE, p.value = 0.005,
   "Limma User's Guide" for more information on how to see up a contrast
   matrix and perform a linear model fit.  The coefficients of the fit
   can then be used a input into the \code{PGSEA} function.
+  
+  This package has not been extensively tested beyond a set of well defined curated pathways using the 
+  Affymetrix platform and significance values represent approximations. Any results should be confirmed 
+  by additional gene set testing methodologies.
+  
 }
 \value{
 	If p.value is set to a number, a matrix of results that pass at that significance is returned,
