@@ -2,7 +2,7 @@
 \alias{PGSEA}
 \title{Parametric Gene Set Enrichment Analysis}
 \description{
-    This package contains functions for parametric analysis of gene
+    This package contains functions for an exploratory parametric analysis of gene
     expression data. This type of analysis can assist in determining of
     lists of genes, such as those deregulated in defined experimental
     systems, are similarly deregulated in other data sets. 
