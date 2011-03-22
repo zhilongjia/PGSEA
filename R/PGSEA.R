@@ -178,12 +178,16 @@ readSmc <- function(files){
   return(smc.list)
 }
 
+
+
+
+
 writeSmc <-function(x){
   if(is.null(x@desc) | is.null(x@chip) | is.null(x@creator))
     stop("A description, chip, and creator is required")
-  if(length(x@reference)==0 & require(Ruuid)) {
-    warning("No reference: creating unique id")
-    x@reference <- sub("-.*","",as.character(getuuid()))
+  if(length(x@reference)==0 ) {
+    warning("No reference: creating 'random' unique id")
+    x@reference <- paste(sample(c(0:9,letters,LETTERS),40,replace=TRUE),collapse="")
   } else {
     #stop("A references is required. Cannot autogenerate")
   }
