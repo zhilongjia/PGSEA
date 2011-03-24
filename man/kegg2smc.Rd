@@ -6,7 +6,7 @@
   This function creates "smc" objects from the "KEGG" Bioconductor library.
 }
 \usage{
-smc <- kegg2smc(min = 1, max = 284,organism="human")
+ kegg2smc(min = 1, max = 284,organism="human")
 }
 
 \arguments{
