@@ -21,7 +21,7 @@ scanSmc(smcList, scanSlot = "private", scanFor = "no")
 
 \examples{
 
-datadir <- system.file("data", package = "PGSEA")
+datadir <- system.file("extdata", package = "PGSEA")
 sample <- readGmt(file.path(datadir, "sample.gmt"))
 sample[1:2] <- editSmc(sample[1:2],"creator","Joe Smith")
 

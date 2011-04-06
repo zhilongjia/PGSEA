@@ -48,7 +48,7 @@ The class contains slots for holding many different types of information about t
 	A previous published method of gene set analysis termed "Gene Set Enrichment Analysis" \url{http://www.broad.mit.edu/gsea/} also used lists of related genes and to hold their lists they use a file format called ".gmt". We have found it to be a simple and useful way to store our lists as well. To facilitate using this format in conjunction with our "smc" class, we have included the functions \Rfunction{readGmt} and \Rfunction{writeGmt}. An example of how to read in a ".gmt" file is shown below. The file provided contains some example molecular concepts. Genes induced and inhibited by Ras and Myc, as well as all genes on chromosome arms 5p and 5q have been included. 
 	
 <<echo=TRUE, print=FALSE>>=	
-	datadir <- system.file("data", package = "PGSEA")
+	datadir <- system.file("extdata", package = "PGSEA")
 	sample <- readGmt(file.path(datadir, "sample.gmt"))
 	str(sample[1])
 @	

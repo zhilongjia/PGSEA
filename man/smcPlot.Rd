@@ -31,7 +31,7 @@ smcPlot(m, ff = NULL, skip = "NO", scale = c(-3, 3), na.color = par("bg"), margi
 \examples{
 
 library(PGSEA)
-datadir <- system.file("data", package = "PGSEA")
+datadir <- system.file("extdata", package = "PGSEA")
 sample <- readGmt(file.path(datadir, "sample.gmt"))
 data(nbEset)
 

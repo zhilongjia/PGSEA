@@ -22,7 +22,7 @@ writeSmc(x)
 
 \examples{
 
-datadir <- system.file("data", package = "PGSEA")
+datadir <- system.file("extdata", package = "PGSEA")
 sample <- readGmt(file.path(datadir, "sample.gmt"))
 str(sample)
 sample[[1]]@reference <- "fileName"

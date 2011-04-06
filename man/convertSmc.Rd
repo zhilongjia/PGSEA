@@ -29,7 +29,7 @@ download.file("ftp://ftp.ncbi.nih.gov/pub/HomoloGene/current/homologene.data",de
 \dontrun{
 	download.file("ftp://ftp.ncbi.nih.gov/pub/HomoloGene/current/homologene.data",destfile="homologene.data",mode="wb")
 	
-	datadir <- system.file("data", package = "PGSEA")
+	datadir <- system.file("extdata", package = "PGSEA")
 	sample <- readGmt(file.path(datadir, "sample.gmt"))
 	
 	converted <- convertSmc(sample[1:2],"h","r")

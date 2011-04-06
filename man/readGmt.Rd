@@ -30,7 +30,7 @@ The .gmt file format is a tab delimited file format used to store gene lists. Th
 
 \examples{
 
-	datadir <- system.file("data", package = "PGSEA")
+	datadir <- system.file("extdata", package = "PGSEA")
 	sample <- readGmt(file.path(datadir, "sample.gmt"))
 	str(sample)
 

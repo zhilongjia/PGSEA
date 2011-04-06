@@ -68,7 +68,7 @@ PGSEA(exprs, cl, range = c(25, 500), ref = NULL, center = TRUE, p.value = 0.005,
 \author{ Kim SY, Volsky DJ., kyle.furge@vai.org and karl.dykema@vai.org }
 \note{\url{http://www.biomedcentral.com/1471-2105/6/144}}
 \examples{
-	datadir <- system.file("data", package = "PGSEA")
+	datadir <- system.file("extdata", package = "PGSEA")
 	sample <- readGmt(file.path(datadir, "sample.gmt"))
 	data(nbEset)
 	pg <- PGSEA(nbEset,cl=sample,ref=1:5)

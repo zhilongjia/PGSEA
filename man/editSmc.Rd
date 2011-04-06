@@ -20,7 +20,7 @@ a list of edited "smc" objects
 
 \examples{
 
-	datadir <- system.file("data", package = "PGSEA")
+	datadir <- system.file("extdata", package = "PGSEA")
 	sample <- readGmt(file.path(datadir, "sample.gmt"))
 	str(sample[1:2])
 	
