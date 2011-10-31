@@ -58,7 +58,7 @@ PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=0.0
 
 	if(!weighted) stat <- try(apply(texprs, 2, t.test,...))
 	else {
-		try(mod <- (length(ix) ^ (1/2)) / sd(exprs,na.rm=TRUE))
+		try(mod <- (length(ix) ^ (1/2)) / apply(exprs, 2, sd, na.rm=TRUE))
 		try(m <- apply(texprs, 2, mean,na.rm=TRUE) - apply(exprs,2,mean,na.rm=TRUE))
 		stat2 <- m * mod
     p.val <- 2*pnorm(-abs(stat2))

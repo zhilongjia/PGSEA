@@ -1,7 +1,7 @@
 Package: PGSEA
 Type: Package
 Title: Parametric Gene Set Enrichment Analysis
-Version: 1.27.0
+Version: 1.27.1
 Author: Kyle Furge <kyle.furge@vai.org> and Karl Dykema <karl.dykema@vai.org>
 Maintainer: Karl Dykema <karl.dykema@vai.org>
 Description: Parametric Analysis of Gene Set Enrichment
