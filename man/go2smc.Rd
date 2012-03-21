@@ -20,7 +20,7 @@ a list of "smc" objects
 \author{ Karl Dykema <karl.dykema@vai.org>}
 
 \examples{
-	if(require(GO)){
+	if(require(GO.db)){
 		mcs <- go2smc()[1:2]
 		str(mcs)
 	}
