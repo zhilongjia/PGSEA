@@ -15,17 +15,45 @@ simScore <- function(obj, upgene, downgene, is.rank=TRUE, ...) {
     upsmc=new("smc",ids=upgene)
     downsmc=new("smc",ids=downgene)
     
+    uppgscore <- PGSEA(mat, cl=list(upsmc))
+    downpgscore <- PGSEA(mat, cl=list(downsmc))
+    
     uppgscore <- PGSEA(mat, cl=list(upsmc), ...)
     downpgscore <- PGSEA(mat, cl=list(downsmc), ...)
     
+    # Normalisation factor
+    sim.max <- simMax(mat, upgene, downgene, is.rank)
+    
     if (is.rank) {
-        score <- downpgscore - uppgscore
+        score <- (downpgscore/sim.max[1] - uppgscore/sim.max[1])/2
     } else {
-        score <- uppgscore - downpgscore
+        score <- (uppgscore/sim.max[1,] - downpgscore/sim.max[2,])/2
     }
-    score <- score/ifelse(max(abs(score), na.rm=TRUE)>0, max(abs(score), na.rm=TRUE), 1)
+
     score
 }
+
+# Called by simMax
+getMax <- function(x, mat, upgene, downgene) {
+    upsmc=new("smc",ids=tail(names(sort(mat[,x]) ), length(upgene)) )
+    downsmc=new("smc",ids=head(names(sort(mat[,x]) ), length(downgene)) )
+    uppgscore <- PGSEA(mat, cl=list(upsmc))
+    downpgscore <- PGSEA(mat, cl=list(downsmc))
+    c(abs(uppgscore[x]), abs(downpgscore[x]) )
+}
+
+# Get the max similar score
+simMax <- function(mat, upgene, downgene, is.rank=TRUE) {
+    if (isTRUE(is.rank)) {
+        # only the legnth of genes affects sim.max
+        sim.max <- getMax( 1, mat, downgene, upgene)
+    } else {
+        sim.max <- sapply(1:ncol(mat),  getMax, mat, upgene, downgene)
+    }
+    return (sim.max)
+    
+}
+
 
 
 makeExpressionSet <- function(dat, state=colnames(dat)){

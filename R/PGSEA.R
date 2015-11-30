@@ -23,7 +23,7 @@ PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=0.0
   }
   if(center)
     exprs <- scale(exprs,scale=FALSE)
-  results <- matrix(NA,length(cl),ncol(exprs))
+  results <- matrix(0,length(cl),ncol(exprs))
   rownames(results) <- names(cl)
   colnames(results) <- colnames(exprs)
   mode(results) <- "numeric"
@@ -74,7 +74,8 @@ PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=0.0
       stat <- unlist(lapply(stat, function(x) x$statistic))
       if (!is.na(p.value)) {
         if(is.numeric(p.value)) {
-          stat[ps > p.value] <- NA
+          # stat[ps > p.value] <- NA
+          stat[ps > p.value] <- 0
         } else {
           p.results[i,] <- ps
         }
@@ -84,7 +85,7 @@ PGSEA <- function (exprs, cl, range=c(25,500), ref=NULL,center=TRUE, p.value=0.0
    if(enforceRange) {
     for(w in 1:ncol(texprs)) {
       if(sum(!is.na(texprs[,w])) < range[1] | sum(!is.na(texprs[,w])) > range[2] ) 
-      results[i,w] <- NA
+      results[i,w] <- 0
     }
    }
   }
