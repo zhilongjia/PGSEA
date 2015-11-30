@@ -24,5 +24,22 @@ simScore <- function(obj, upgene, downgene, is.rank=TRUE, ...) {
         score <- uppgscore - downpgscore
     }
     score <- score/ifelse(max(abs(score), na.rm=TRUE)>0, max(abs(score), na.rm=TRUE), 1)
-    
+    score
 }
+
+
+makeExpressionSet <- function(dat, state=colnames(dat)){
+    
+    dat <- data.matrix(dat)
+    pdata <- as.data.frame(state)
+    rownames(pdata) <- colnames(dat)
+    
+    metadata <- data.frame(labelDescription=c("state"), row.names=c("state"))
+    phenoData <- new("AnnotatedDataFrame", data=pdata, varMetadata=metadata) 
+    dataExp <- ExpressionSet(assayData=dat,  phenoData=phenoData)
+    dataExp
+}
+
+
+
+
