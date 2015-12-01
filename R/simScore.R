@@ -14,10 +14,7 @@ simScore <- function(obj, upgene, downgene, is.rank=TRUE, ...) {
     
     upsmc=new("smc",ids=upgene)
     downsmc=new("smc",ids=downgene)
-    
-    uppgscore <- PGSEA(mat, cl=list(upsmc))
-    downpgscore <- PGSEA(mat, cl=list(downsmc))
-    
+
     uppgscore <- PGSEA(mat, cl=list(upsmc), ...)
     downpgscore <- PGSEA(mat, cl=list(downsmc), ...)
     
@@ -56,7 +53,7 @@ simMax <- function(mat, upgene, downgene, is.rank=TRUE) {
 
 
 
-makeExpressionSet <- function(dat, state=colnames(dat)){
+makeESet <- function(dat, state=colnames(dat)){
     
     dat <- data.matrix(dat)
     pdata <- as.data.frame(state)
