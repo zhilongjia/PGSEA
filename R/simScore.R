@@ -12,8 +12,15 @@ simScore <- function(obj, upgene, downgene, is.rank=TRUE, ...) {
             object")
     )
     
+    matgene <- rownames(mat)
+    upgene <- intersect(upgene, matgene)
     upsmc=new("smc",ids=upgene)
+    downgene <- intersect(downgene, matgene)
     downsmc=new("smc",ids=downgene)
+    
+    deggene <- union(upgene, downgene)
+    matgene <- union(setdiff(matgene, deggene), intersect(matgene, deggene) )
+    mat <- mat[matgene,]
 
     uppgscore <- PGSEA(mat, cl=list(upsmc), ...)
     downpgscore <- PGSEA(mat, cl=list(downsmc), ...)
